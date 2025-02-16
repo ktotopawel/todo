@@ -1,15 +1,41 @@
-import Todo from './todo';
+import createProject from "./projects";
+import "./style.css";
 
-let card = Todo("title", "2025-12-01", "desc", "1", "abc", "note");
+let myProject = createProject("myTitle");
 
-card.printCard();
+myProject.addCard("PTitle1", "2025-03-22", "myDesc", "1");
+myProject.addCard("PTitle2", "2026-03-22", "myDesc", "1");
+myProject.addCard("PTitle3", "2025-07-22", "myDesc", "2");
+myProject.addCard("PTitle4", "2025-03-23", "myDesc", "1");
+myProject.addCard("PTitle5", "2025-04-22", "myDesc", "3");
+myProject.addCard("PTitle6", "2025-01-22", "myDesc", "1");
 
-console.log(card.timeLeft());
+console.log(myProject.getProject());
 
-card.checklist.addEl('jestem czarny', true);
+myProject.sortByDate();
 
-card.checklist.list[0].changeDone();
+console.log(myProject.getProject());
 
-card.title = 'nothing';
+myProject.sortByPriority();
 
-card.printCard();
+console.log(myProject.getProject());
+
+const projectsList = document.querySelector(".project-list-btn");
+
+projectsList.addEventListener("click", () => {
+  let list = document.querySelector(".project-list");
+  let dropdownArrow = document.querySelector('#dropdown-icon');
+
+  if (list.style.maxHeight) {
+    list.style.maxHeight = null;
+  } else {
+    list.style.maxHeight = list.scrollHeight + "px";
+  }
+
+  if (dropdownArrow.style.transform == 'rotateZ(90deg)') {
+    dropdownArrow.style.transform = 'rotateZ(0deg)'
+  } else {
+    dropdownArrow.style.transform = 'rotateZ(90deg)'
+  }
+
+});

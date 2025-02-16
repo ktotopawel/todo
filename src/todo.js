@@ -1,4 +1,4 @@
-import { formatRelative } from "date-fns";
+import { format, formatRelative, isToday } from "date-fns";
 import { enGB } from "date-fns/locale";
 
 export default function newCard(title, date, description, priority) {
@@ -14,9 +14,23 @@ class Todo {
     this.checklist = new Checklist();
   }
 
+  getCard() {
+    return {
+      title: this.title,
+      date: format(this.date, 'dd/MM/yyyy'),
+      description: this.description,
+      priority: this.priority,
+      checklist: this.checklist
+    }
+  }
+
   timeLeft() {
     // console.log(this.date);
     return formatRelative(this.date, new Date(), { locale: enGB });
+  }
+
+  isToday() {
+    return isToday(this.date);
   }
 
   printCard() {

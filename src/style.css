@@ -1,0 +1,158 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
+:root {
+  font-family: system-ui, sans-serif;
+  font-weight: normal;
+
+  --default-padding: 1rem 1.5rem;
+}
+
+.icon {
+    height: 1.25rem;
+    display: inline-block;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 1fr 9fr;
+}
+
+.sidebar {
+  padding: var(--default-padding);
+  background: wheat;
+  height: 100vh;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  & .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    & h3 {
+      height: 2rem;
+      font-weight: 400;
+    }
+    & img {
+      height: 2rem;
+    }
+  }
+
+  & li {
+    cursor: pointer;
+  }
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+.navbar {
+  list-style: none;
+  margin: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+/* .nav-btn:hover {
+    transform: scale(1.1, 1.1);
+} */
+
+.project-list-btn {
+    display: flex;
+    align-items: center;
+
+    & .icon {
+        margin-left: auto;
+    }
+}
+
+#dropdown-icon {
+    transform: rotateZ(0deg);
+    transition: transform 200ms ease-out;
+}
+
+.project-list {
+    /* padding-top: 0.5rem; */
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-weight: 400;
+
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 200ms ease-out;
+}
+
+footer {
+  margin-top: auto;
+  text-align: center;
+}
