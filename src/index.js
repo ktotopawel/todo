@@ -14,12 +14,12 @@ myProject.addCard("PTitle6", "2025-01-22", "myDesc", "1");
 
 let myProject2 = createProject("myTitle2");
 
-myProject.addCard("PTitle1", "2025-03-22", "myDesc", "1");
-myProject.addCard("PTitle2", "2026-03-22", "myDesc", "1");
-myProject.addCard("PTitle3", "2025-07-22", "myDesc", "2");
-myProject.addCard("PTitle4", "2025-03-23", "myDesc", "1");
-myProject.addCard("PTitle5", "2025-04-22", "myDesc", "3");
-myProject.addCard("PTitle6", "2025-01-22", "myDesc", "1");
+myProject2.addCard("PTitle1", "2025-03-22", "myDesc", "1");
+myProject2.addCard("PTitle2", "2026-03-22", "myDesc", "1");
+myProject2.addCard("PTitle3", "2025-07-22", "myDesc", "2");
+myProject2.addCard("PTitle4", "2025-03-23", "myDesc", "1");
+myProject2.addCard("PTitle5", "2025-04-22", "myDesc", "3");
+myProject2.addCard("PTitle6", "2025-01-22", "myDesc", "1");
 
 
 
@@ -46,3 +46,5 @@ projectsList.addEventListener("click", () => {
 
 
 loadPage.populateProjectList([myProject, myProject2]);
+
+loadPage.populateContent(myProject);

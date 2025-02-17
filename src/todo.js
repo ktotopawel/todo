@@ -20,7 +20,7 @@ class Todo {
       date: format(this.date, 'dd/MM/yyyy'),
       description: this.description,
       priority: this.priority,
-      checklist: this.checklist
+      checklist: this.checklist.list,
     }
   }
 
