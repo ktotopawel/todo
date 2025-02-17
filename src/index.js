@@ -1,5 +1,7 @@
 import createProject from "./projects";
+import loadPage from "./populateDOM";
 import "./style.css";
+
 
 let myProject = createProject("myTitle");
 
@@ -10,15 +12,16 @@ myProject.addCard("PTitle4", "2025-03-23", "myDesc", "1");
 myProject.addCard("PTitle5", "2025-04-22", "myDesc", "3");
 myProject.addCard("PTitle6", "2025-01-22", "myDesc", "1");
 
-console.log(myProject.getProject());
+let myProject2 = createProject("myTitle2");
 
-myProject.sortByDate();
+myProject.addCard("PTitle1", "2025-03-22", "myDesc", "1");
+myProject.addCard("PTitle2", "2026-03-22", "myDesc", "1");
+myProject.addCard("PTitle3", "2025-07-22", "myDesc", "2");
+myProject.addCard("PTitle4", "2025-03-23", "myDesc", "1");
+myProject.addCard("PTitle5", "2025-04-22", "myDesc", "3");
+myProject.addCard("PTitle6", "2025-01-22", "myDesc", "1");
 
-console.log(myProject.getProject());
 
-myProject.sortByPriority();
-
-console.log(myProject.getProject());
 
 const projectsList = document.querySelector(".project-list-btn");
 
@@ -39,3 +42,7 @@ projectsList.addEventListener("click", () => {
   }
 
 });
+
+
+
+loadPage.populateProjectList([myProject, myProject2]);
