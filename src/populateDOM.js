@@ -1,8 +1,23 @@
-import { el } from "date-fns/locale";
+import projectsFn from "./projects";
 
 function populateDOM() {
   function populateProjectList(projects) {
     let projectList = document.querySelector(".project-list");
+
+    const keepElement = document.querySelector('#keep-element');
+    while (projectList.firstChild) {
+      if (projectList.firstChild !== keepElement) {
+        projectList.removeChild(projectList.firstChild);
+      } else {
+        break;
+      }
+    }
+    
+    const addBtn = document.createElement('li');
+    addBtn.id = 'add-project';
+    addBtn.textContent = '+ Add'
+
+    projectList.prepend(addBtn);
 
     for (let i = 0; i < projects.length; i++) {
       const project = projects[i];
@@ -13,14 +28,44 @@ function populateDOM() {
       // element.addEventListener('click', createContent() )
 
       projectList.prepend(element);
+
+      element.addEventListener('click', () => {
+        populateContent(project);
+      });
     }
+
+    const projectDialog = document.querySelector('#project-dialog');
+
+    addBtn.addEventListener('click', () => {
+      if (projectDialog.classList.contains('active')) {
+        const input = projectDialog.querySelector('input').value;
+
+        const addedProject = projectsFn.newProject(input);
+
+        populateContent(addedProject);
+        populateProjectList(projectsFn.projectArr);
+      }
+
+      projectDialog.classList.add('active');
+
+      const list = document.querySelector(".project-list");
+      list.style.maxHeight = list.scrollHeight + "px";
+    })
   }
 
   function populateContent(project) {
     const main = document.querySelector("#content");
 
+
+    clearContent();
     generateTitleSection();
     generateCards();
+
+    function clearContent() {
+      while (main.firstChild) {
+        main.removeChild(main.firstChild);
+      }
+    }
 
     function generateCards() {
       const cards = document.createElement("div");

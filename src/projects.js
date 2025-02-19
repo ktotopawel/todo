@@ -1,7 +1,19 @@
 import newCard from "./todo";
 
-export default function createProject(title) {
-  return new Project(title);
+function projects() {
+  const projectArr = [];
+  
+  function newProject(title) {
+    const project = new Project(title);
+    
+    projectArr.push(project);
+    return project;
+  }
+  
+  return {
+    newProject,
+    projectArr
+  };
 }
 
 class Project {
@@ -9,19 +21,19 @@ class Project {
     this.title = title;
     this.cardArr = [];
   }
-
+  
   addCard(title, date, desc, priority) {
     this.cardArr.push(newCard(title, date, desc, priority));
   }
-
+  
   sortByDate() {
     this.cardArr.sort((a, b) => a.date - b.date);
   }
-
+  
   sortByPriority() {
     this.cardArr.sort((a,b) => a.priority - b.priority);
   }
-
+  
   getProject() {
     return {
       title: this.title,
@@ -31,3 +43,5 @@ class Project {
     };
   }
 }
+
+export default projects();

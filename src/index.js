@@ -1,23 +1,23 @@
-import createProject from "./projects";
+import projects from "./projects";
 import loadPage from "./populateDOM";
 import "./style.css";
 
 
-let myProject = createProject("myTitle");
+const myProject = projects.newProject("myTitle");
 
 myProject.addCard("PTitle1", "2025-03-22", "myDesc", "1");
-myProject.addCard("PTitle2", "2026-03-22", "myDesc", "1");
+myProject.addCard("baca", "2026-03-22", "myDesc", "1");
 myProject.addCard("PTitle3", "2025-07-22", "myDesc", "2");
 myProject.addCard("PTitle4", "2025-03-23", "myDesc", "1");
-myProject.addCard("PTitle5", "2025-04-22", "myDesc", "3");
+myProject.addCard("acabv", "2025-04-22", "myDesc", "3");
 myProject.addCard("PTitle6", "2025-01-22", "myDesc", "1");
 
-let myProject2 = createProject("myTitle2");
+const myProject2 = projects.newProject("myTitle2");
 
 myProject2.addCard("PTitle1", "2025-03-22", "myDesc", "1");
 myProject2.addCard("PTitle2", "2026-03-22", "myDesc", "1");
 myProject2.addCard("PTitle3", "2025-07-22", "myDesc", "2");
-myProject2.addCard("PTitle4", "2025-03-23", "myDesc", "1");
+myProject2.addCard("lolek", "2025-03-23", "myDesc", "1");
 myProject2.addCard("PTitle5", "2025-04-22", "myDesc", "3");
 myProject2.addCard("PTitle6", "2025-01-22", "myDesc", "1");
 
@@ -26,8 +26,8 @@ myProject2.addCard("PTitle6", "2025-01-22", "myDesc", "1");
 const projectsList = document.querySelector(".project-list-btn");
 
 projectsList.addEventListener("click", () => {
-  let list = document.querySelector(".project-list");
-  let dropdownArrow = document.querySelector('#dropdown-icon');
+  const list = document.querySelector(".project-list");
+  const dropdownArrow = document.querySelector('#dropdown-icon');
 
   if (list.style.maxHeight) {
     list.style.maxHeight = null;
@@ -45,6 +45,6 @@ projectsList.addEventListener("click", () => {
 
 
 
-loadPage.populateProjectList([myProject, myProject2]);
+loadPage.populateProjectList(projects.projectArr);
 
 loadPage.populateContent(myProject);

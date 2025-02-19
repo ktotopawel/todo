@@ -21,7 +21,11 @@
                             class="icon" id="dropdown-icon"></div>
                 </li>
                 <ul class="project-list">
-                    <li>Add +</li>
+                    <li id="keep-element">
+                        <dialog id="project-dialog" class="project">
+                            <input type="text" autofocus placeholder="Project Title"> 
+                        </dialog>
+                    </li>
                 </ul>
                 <li class="nav-btn pomodoro">Pomodoro</li>
             </ul>
@@ -31,7 +35,12 @@
         </footer>
     </div>
     <div id="content">
-        
+        <dialog class="card">
+            <form method="dialog">
+                <h3>New Project</h3>
+                
+            </form>
+        </dialog>
     </div>
 </body>
 
