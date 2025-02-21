@@ -1,6 +1,7 @@
 import projectsFn from "./projects";
 
 function populateDOM() {
+  //handles the project list on the sidebar
   function populateProjectList(projects) {
     let projectList = document.querySelector(".project-list");
 
@@ -74,6 +75,8 @@ function populateDOM() {
     };
   }
 
+  //has to be handled outside of populateProjectList or the event listener is added multiple times
+
   const projectInput = document.querySelector("#project-title-input");
   projectInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
@@ -83,6 +86,7 @@ function populateDOM() {
     }
   });
 
+  //generates the actual content of the page
   function populateContent(project) {
     const main = document.querySelector("#content");
 
@@ -91,8 +95,8 @@ function populateDOM() {
     generateCards();
 
     function clearContent() {
-      while (main.firstChild) {
-        main.removeChild(main.firstChild);
+      while (main.lastChild.id !== "add-card-from") {
+        main.removeChild(main.lastChild);
       }
     }
 
@@ -100,12 +104,8 @@ function populateDOM() {
       const cards = document.createElement("div");
       cards.classList.add("cards");
 
-      console.log(project.cardArr);
-
       for (let index = 0; index < project.cardArr.length; index++) {
         const element = project.cardArr[index];
-
-        console.log(element.getCard().title);
 
         const card = document.createElement("div");
         card.classList.add("card");
@@ -200,6 +200,7 @@ function populateDOM() {
       titlebar.classList.add("titlebar");
 
       const title = document.createElement("h2");
+      title.classList.add("current-project-title");
       title.textContent = project.title;
 
       const btns = document.createElement("div");
@@ -222,6 +223,8 @@ function populateDOM() {
       titlebar.appendChild(btns);
 
       main.appendChild(titlebar);
+
+      handleDOMButtons(project);
     }
   }
 
@@ -229,6 +232,32 @@ function populateDOM() {
     populateProjectList,
     populateContent,
   };
+}
+
+function handleDOMButtons(currentProject) {
+  const projectAdd = document.querySelector("#add");
+  const projectEdit = document.querySelector("#edit");
+  const projectDel = document.querySelector("#delete");
+  const formClose = document.querySelector('.close');
+
+  console.log(projectAdd);
+
+  const addCardForm = document.querySelector(".form");
+
+  projectAdd.addEventListener("click", addCard);
+  formClose.addEventListener("click", closeForm);
+
+  function addCard() {
+    addCardForm.style.transform = 'scaleY(1)'
+  }
+
+  function editProject() {}
+
+  function deleteProject() {}
+
+  function closeForm() {
+    addCardForm.style.transform = 'scaleY(0)';
+  }
 }
 
 let loadPage = populateDOM();

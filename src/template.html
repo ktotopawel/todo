@@ -23,7 +23,7 @@
                 <ul class="project-list">
                     <li id="keep-element">
                         <dialog id="project-dialog" class="project">
-                            <input type="text" autofocus placeholder="Project Title" id="project-title-input"> 
+                            <input type="text" autofocus placeholder="Project Title" id="project-title-input">
                         </dialog>
                     </li>
                 </ul>
@@ -35,12 +35,52 @@
         </footer>
     </div>
     <div id="content">
-        <dialog class="card">
+        <div class="form" id="add-card-from">
             <form method="dialog">
-                <h3>New Project</h3>
-                
+                <div class="input-field">
+                    <label for="title-input">Title</label>
+                    <input type="text" name="title-input" id="title-input">
+                </div>
+                <div class="input-field">
+                    <label for="date-input">Due date</label>
+                    <input type="date" name="date-input" id="date-input">
+                </div>
+                <div class="input-field">
+                    <label for="description-input">Description</label>
+                    <textarea name="description-input" id="description-input"></textarea>
+                </div>
+                <div class="input-field">
+                    <label for="priority-input">Priority</label>
+                    <input type="number" min="1" max="3" name="priority-input" id="priority-input" value="1">
+                </div>
+                <section>
+                    <h3>Checklist:</h3>
+                    <div class="checkboxes">
+                        <div class="checkbox-field">
+                            <input type="checkbox" name="check1" id="check1">
+                            <label for="check1">Check1</label>
+                        </div>
+                        <div class="checkbox-field">
+                            <input type="checkbox" name="check2" id="check2">
+                            <label for="check2">Check1</label>
+                        </div>
+                    </div>
+                    <div class="add-checklist-item">
+                        <div class="checkbox-title-submit-btn">+</div>
+                        <input type="text" name="checkbox-title" id="checkbox-title"
+                        placeholder="Add item...">
+                    </div>
+                </section>
+                <div class="btns">
+                    <div class="card-submit btn">
+                        Add
+                    </div>
+                    <div class="close btn">
+                        Close
+                    </div>
+                </div>
             </form>
-        </dialog>
+        </div>
     </div>
 </body>
 

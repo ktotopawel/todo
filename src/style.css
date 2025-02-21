@@ -380,7 +380,7 @@ dialog.project {
   border: none;
   max-width: 100%;
   display: none;
-  transition: display 200ms ease-out ;
+  transition: display 200ms ease-out;
 
   & input {
     width: 100%;
@@ -405,6 +405,118 @@ dialog.card {
   width: 100%;
 }
 
+.form {
+  z-index: 3;
+  position: absolute;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 300ms ease-out;
+
+  height: 100%;
+  width: 100%;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+
+  &::before {
+    content: "New Card";
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--black);
+  }
+
+  & form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: var(--theme-light);
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    width: 50%;
+    max-width: 600px;
+    min-width: 300px;
+
+    & input {
+      height: 2rem;
+    }
+
+    & textarea {
+      resize: none;
+      height: 6rem;
+      padding-top: 0.5rem;
+    }
+
+    & input,
+    textarea {
+      background-color: var(--white);
+      color: var(--black);
+      border: none;
+      outline: none;
+      border-radius: 0.5rem;
+      padding: 0 1rem;
+
+      &:focus {
+        box-shadow: 1px 1px 6px -3px black;
+      }
+    }
+  }
+
+  & .input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  & .checkbox-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .btns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .btn {
+    background: var(--theme-dark);
+    color: var(--white);
+    font-size: 1.25rem;
+    padding: 0.5rem 1rem;
+    align-self: flex-end;
+    font-weight: 600;
+    border-radius: 1rem;
+    cursor: pointer;
+
+    &.close {
+      background: var(--highlight);
+      color: var(--black);
+    }
+  }
+
+  .add-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    & .checkbox-title-submit-btn {
+      background: var(--theme-dark);
+      padding: 0rem 0.5rem;
+      color: var(--white);
+      font-weight: 900;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+}
 
 footer {
   margin-top: auto;

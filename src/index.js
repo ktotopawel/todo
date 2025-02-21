@@ -1,5 +1,5 @@
 import projects from "./projects";
-import loadPage from "./populateDOM";
+import loadPage from "./handleDOM";
 import "./style.css";
 
 
@@ -47,4 +47,4 @@ projectsList.addEventListener("click", () => {
 
 loadPage.populateProjectList(projects.projectArr);
 
-loadPage.populateContent(myProject);
+// loadPage.populateContent(myProject);
