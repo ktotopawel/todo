@@ -4,7 +4,7 @@ function populateDOM() {
   function populateProjectList(projects) {
     let projectList = document.querySelector(".project-list");
 
-    const keepElement = document.querySelector('#keep-element');
+    const keepElement = document.querySelector("#keep-element");
     while (projectList.firstChild) {
       if (projectList.firstChild !== keepElement) {
         projectList.removeChild(projectList.firstChild);
@@ -12,10 +12,10 @@ function populateDOM() {
         break;
       }
     }
-    
-    const addBtn = document.createElement('li');
-    addBtn.id = 'add-project';
-    addBtn.textContent = '+ Add'
+
+    const addBtn = document.createElement("li");
+    addBtn.id = "add-project";
+    addBtn.textContent = "+ Add";
 
     projectList.prepend(addBtn);
 
@@ -29,33 +29,62 @@ function populateDOM() {
 
       projectList.prepend(element);
 
-      element.addEventListener('click', () => {
+      element.addEventListener("click", () => {
         populateContent(project);
       });
     }
 
-    const projectDialog = document.querySelector('#project-dialog');
+    const projectDialog = document.querySelector("#project-dialog");
 
-    addBtn.addEventListener('click', () => {
-      if (projectDialog.classList.contains('active')) {
-        const input = projectDialog.querySelector('input').value;
-
-        const addedProject = projectsFn.newProject(input);
-
-        populateContent(addedProject);
-        populateProjectList(projectsFn.projectArr);
+    addBtn.addEventListener("click", () => {
+      if (projectDialog.classList.contains("active")) {
+        addNewProject();
+        return;
       }
 
-      projectDialog.classList.add('active');
+      projectDialog.classList.add("active");
 
+      adjustProjectListHeight();
+    });
+
+    function adjustProjectListHeight() {
       const list = document.querySelector(".project-list");
       list.style.maxHeight = list.scrollHeight + "px";
-    })
+    }
+
+    function addNewProject() {
+      if (projectDialog.querySelector("input").value === "") {
+        return;
+      }
+
+      const input = projectDialog.querySelector("input").value;
+
+      const addedProject = projectsFn.newProject(input);
+
+      populateContent(addedProject);
+      populateProjectList(projectsFn.projectArr);
+
+      projectDialog.classList.remove("active");
+      projectDialog.querySelector("input").value = "";
+    }
+
+    return {
+      addNewProject,
+      adjustProjectListHeight,
+    };
   }
+
+  const projectInput = document.querySelector("#project-title-input");
+  projectInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const projectListMethods = populateProjectList(projectsFn.projectArr);
+      projectListMethods.addNewProject();
+      projectListMethods.adjustProjectListHeight();
+    }
+  });
 
   function populateContent(project) {
     const main = document.querySelector("#content");
-
 
     clearContent();
     generateTitleSection();
