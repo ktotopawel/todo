@@ -99,7 +99,7 @@ function populateDOM() {
         main.removeChild(main.lastChild);
       }
     }
-
+    //generates the card ToDo display
     function generateCards() {
       const cards = document.createElement("div");
       cards.classList.add("cards");
@@ -174,6 +174,7 @@ function populateDOM() {
           checkbox.type = "checkbox";
           checkbox.id = `id${i}`;
           checkbox.name = `id${i}`;
+          checkbox.checked = checkElement.done;
 
           const label = document.createElement("label");
           label.htmlFor = `id${i}`;
@@ -183,6 +184,10 @@ function populateDOM() {
           checkItem.appendChild(label);
 
           checklist.appendChild(checkItem);
+
+          checkbox.addEventListener("click", () => {
+            checkElement.done = checkbox.checked;
+          });
         }
         cardContent.appendChild(cardDesc);
         if (element.getCard().checklist.length > 0) {
@@ -194,7 +199,7 @@ function populateDOM() {
       }
       main.appendChild(cards);
     }
-
+    //generates the title section of the project display
     function generateTitleSection() {
       const titlebar = document.createElement("div");
       titlebar.classList.add("titlebar");
@@ -202,8 +207,6 @@ function populateDOM() {
       const title = document.createElement("h2");
       title.classList.add("current-project-title");
       title.textContent = project.title;
-
-      console.log(title)
 
       const btns = document.createElement("div");
       btns.classList.add("btns");
@@ -229,68 +232,113 @@ function populateDOM() {
       handleDOMButtons(project);
     }
   }
+  //handles different button presses on the project display
+  function handleDOMButtons(currentProject) {
+    const projectAdd = document.querySelector("#add");
+    const projectEdit = document.querySelector("#edit");
+    const projectDel = document.querySelector("#delete");
+    const formClose = document.querySelector(".close");
+    
+    const addCardForm = document.querySelector(".form");
+
+    const titleField = document.querySelector("#title-input");
+    const dateField = document.querySelector("#date-input");
+    const descField = document.querySelector("#description-input");
+    const priorityField = document.querySelector("#priority-input");
+    const checkBoxList = document.querySelector(".checkboxes");
+
+    projectAdd.addEventListener("click", cardForm);
+    formClose.addEventListener("click", closeForm);
+
+    addCard(currentProject);
+
+    function cardForm() {
+      addCardForm.style.transform = "scaleY(1)";
+    }
+
+    function editProject() {}
+
+    function deleteProject() {}
+
+    function closeForm() {
+      addCardForm.style.transform = "scaleY(0)";
+      titleField.value = "";
+      dateField.value = "";
+      descField.value = "";
+      priorityField.value = "";
+
+      while (checkBoxList.firstChild) {checkBoxList.removeChild(checkBoxList.firstChild);}
+    }
+
+    function addCard(currentProject) {
+
+      const buttons = document.querySelector(".btns");
+
+      const checkboxSubmitBtn = document.querySelector(
+        ".checkbox-title-submit-btn"
+      );
+
+      buttons.addEventListener("click", (e) => {
+        const target = e.target;
+
+        switch (target.id) {
+          case "submit-btn":
+            console.log("i work");
+            currentProject.addCard(
+              titleField.value,
+              dateField.value,
+              descField.value,
+              priorityField.value
+            );
+            closeForm();
+            populateDOM().populateContent(currentProject);
+            break;
+          case "close-btn":
+            closeForm();
+            break;
+        }
+      });
+
+      checkboxSubmitBtn.addEventListener("click", addCheckbox);
+      const checkboxTitleInput = document.querySelector("#checkbox-title");
+      checkboxTitleInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          addCheckbox();
+        }
+      });
+
+      function addCheckbox() {
+        const checkboxTitle = document.querySelector("#checkbox-title").value;
+
+        if (checkboxTitle === '') {
+          return
+        }
+
+        const checkboxField = document.createElement("div");
+        checkboxField.classList.add("checkbox-field");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = checkboxTitle;
+        checkbox.id = checkboxTitle;
+
+        const label = document.createElement("label");
+        label.htmlFor = checkboxTitle;
+        label.textContent = checkboxTitle;
+
+        checkboxField.appendChild(checkbox);
+        checkboxField.appendChild(label);
+
+        checkBoxList.appendChild(checkboxField);
+      }
+    }
+  }
 
   return {
     populateProjectList,
     populateContent,
   };
 }
-
-function handleDOMButtons(currentProject) {
-  const projectAdd = document.querySelector("#add");
-  const projectEdit = document.querySelector("#edit");
-  const projectDel = document.querySelector("#delete");
-  const formClose = document.querySelector('.close');
-
-  console.log(projectAdd);
-
-  const addCardForm = document.querySelector(".form");
-
-  projectAdd.addEventListener("click", cardForm);
-  formClose.addEventListener("click", closeForm);
-
-  addCard(currentProject);
-
-  function cardForm() {
-    addCardForm.style.transform = 'scaleY(1)'
-  }
-
-  function editProject() {}
-
-  function deleteProject() {}
-
-  function closeForm() {
-    addCardForm.style.transform = 'scaleY(0)';
-  }
-
-  function addCard(currentProject) {
-    const titleField = document.querySelector("#title-input");
-    const dateField = document.querySelector('#date-input');
-    const descField = document.querySelector('#description-input');
-    const priorityField = document.querySelector('#priority-input');
-  
-    const buttons = document.querySelector('.btns');
-  
-    buttons.addEventListener('click', (e) => {
-      const target = e.target;
-
-      console.log(target);
-  
-      switch (target.id) {
-        
-        case 'submit-btn': 
-        console.log('i work');
-        currentProject.addCard(titleField.value, dateField.value, descField.value, priorityField.value);
-        closeForm();
-        populateDOM().populateContent(currentProject);
-        break;
-        case 'close-btn': closeForm();
-        break;
-      }
-    })
-  }
-}
-
 
 let loadPage = populateDOM();
 

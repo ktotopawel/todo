@@ -60,6 +60,10 @@ class Todo {
       this.priority = newPriority;
     }
   }
+
+  accessChecklist() {
+    return this.checklist;
+  }
 }
 
 class Checklist {
