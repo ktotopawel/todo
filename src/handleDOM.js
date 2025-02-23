@@ -1,3 +1,4 @@
+import { isBefore } from "date-fns";
 import projectsFn from "./projects";
 
 function populateDOM() {
@@ -91,12 +92,13 @@ function populateDOM() {
     const main = document.querySelector("#content");
 
     clearContent();
+    generateAddCardForm();
     generateTitleSection();
     generateCards();
 
     function clearContent() {
-      while (main.lastChild.id !== "add-card-from") {
-        main.removeChild(main.lastChild);
+      while (main.firstChild) {
+        main.removeChild(main.firstChild);
       }
     }
     //generates the card ToDo display
@@ -231,6 +233,134 @@ function populateDOM() {
 
       handleDOMButtons(project);
     }
+
+    function generateAddCardForm() {
+      const formBg = document.createElement("div");
+      formBg.id = "add-card-form";
+      formBg.classList.add("form");
+
+      const form = document.createElement("form");
+      form.method = "dialog";
+
+      const titleInputField = document.createElement("div");
+      titleInputField.classList.add("input-field");
+
+      const titleInputLabel = document.createElement("label");
+      titleInputLabel.htmlFor = "title-input";
+      titleInputLabel.textContent = "Title";
+
+      const titleInput = document.createElement("input");
+      titleInput.type = "text";
+      titleInput.name = "title-input";
+      titleInput.id = "title-input";
+
+      titleInputField.appendChild(titleInputLabel);
+      titleInputField.appendChild(titleInput);
+      form.appendChild(titleInputField);
+
+      const dateInputField = document.createElement("div");
+      dateInputField.classList.add("input-field");
+
+      const dateInputLabel = document.createElement("label");
+      dateInputLabel.htmlFor = "date-input";
+      dateInputLabel.textContent = "Due date";
+
+      const dateInput = document.createElement("input");
+      dateInput.type = "date";
+      dateInput.name = "date-input";
+      dateInput.id = "date-input";
+
+      dateInputField.appendChild(dateInputLabel);
+      dateInputField.appendChild(dateInput);
+      form.appendChild(dateInputField);
+
+      const descriptionInputField = document.createElement("div");
+      descriptionInputField.classList.add("input-field");
+
+      const descriptionInputLabel = document.createElement("label");
+      descriptionInputLabel.htmlFor = "description-input";
+      descriptionInputLabel.textContent = "Description";
+
+      const descriptionInput = document.createElement("textarea");
+      descriptionInput.name = "description-input";
+      descriptionInput.id = "description-input";
+
+      descriptionInputField.appendChild(descriptionInputLabel);
+      descriptionInputField.appendChild(descriptionInput);
+      form.appendChild(descriptionInputField);
+
+      const priorityInputField = document.createElement("div");
+      priorityInputField.classList.add("input-field");
+
+      const priorityInputLabel = document.createElement("label");
+      priorityInputLabel.htmlFor = "priority-input";
+      priorityInputLabel.textContent = "Priority";
+
+      const priorityInput = document.createElement("input");
+      priorityInput.type = "number";
+      priorityInput.name = "priority-input";
+      priorityInput.id = "priority-input";
+      priorityInput.min = "1";
+      priorityInput.max = "3";
+      priorityInput.value = "1";
+
+      priorityInputField.appendChild(priorityInputLabel);
+      priorityInputField.appendChild(priorityInput);
+      form.appendChild(priorityInputField);
+
+      const checkboxSection = document.createElement("section");
+
+      const checkboxSectionLabel = document.createElement("h3");
+      checkboxSectionLabel.textContent = "Checklist:";
+
+      checkboxSection.appendChild(checkboxSectionLabel);
+
+      const checkboxes = document.createElement("div");
+      checkboxes.classList.add("checkboxes");
+
+      checkboxSection.appendChild(checkboxes);
+
+      const addCheckbox = document.createElement("div");
+      addCheckbox.classList.add("add-checklist-item");
+
+      const checkboxSubmitBtn = document.createElement("div");
+      checkboxSubmitBtn.classList.add("checkbox-title-submit-btn");
+      checkboxSubmitBtn.textContent = "+";
+
+      addCheckbox.appendChild(checkboxSubmitBtn);
+
+      const checkboxTitle = document.createElement("input");
+      checkboxTitle.type = "text";
+      checkboxTitle.name = "checkbox-title";
+      checkboxTitle.id = "checkbox-title";
+      checkboxTitle.placeholder = "Add item...";
+
+      addCheckbox.appendChild(checkboxTitle);
+
+      checkboxSection.appendChild(addCheckbox);
+      form.appendChild(checkboxSection);
+
+      const btns = document.createElement("div");
+      btns.classList.add("btns");
+
+      const submitBtn = document.createElement("div");
+      submitBtn.classList.add("card-submit", "btn");
+      submitBtn.id = "submit-btn";
+      submitBtn.textContent = "Add";
+      btns.appendChild(submitBtn);
+
+      const closeBtn = document.createElement("div");
+      closeBtn.classList.add("close", "btn");
+      closeBtn.id = "close-btn";
+      closeBtn.textContent = "Close";
+      btns.appendChild(closeBtn);
+
+      form.appendChild(btns);
+
+      formBg.appendChild(form);
+
+      main.appendChild(formBg);
+    }
   }
   //handles different button presses on the project display
   function handleDOMButtons(currentProject) {
@@ -238,7 +368,7 @@ function populateDOM() {
     const projectEdit = document.querySelector("#edit");
     const projectDel = document.querySelector("#delete");
     const formClose = document.querySelector(".close");
-    
+
     const addCardForm = document.querySelector(".form");
 
     const titleField = document.querySelector("#title-input");
@@ -267,29 +397,45 @@ function populateDOM() {
       descField.value = "";
       priorityField.value = "";
 
-      while (checkBoxList.firstChild) {checkBoxList.removeChild(checkBoxList.firstChild);}
+      while (checkBoxList.firstChild) {
+        checkBoxList.removeChild(checkBoxList.firstChild);
+      }
     }
 
     function addCard(currentProject) {
-
       const buttons = document.querySelector(".btns");
 
       const checkboxSubmitBtn = document.querySelector(
         ".checkbox-title-submit-btn"
       );
 
+      const checkboxArr = [];
+
       buttons.addEventListener("click", (e) => {
         const target = e.target;
 
         switch (target.id) {
           case "submit-btn":
-            console.log("i work");
-            currentProject.addCard(
+            if (
+              isBefore(new Date(dateField.value), new Date()) ||
+              titleField.value === ""
+            ) {
+              alert("Please fill with correct date (in the future) and title.");
+              return;
+            }
+
+            const newCard = currentProject.addCard(
               titleField.value,
               dateField.value,
               descField.value,
               priorityField.value
             );
+
+            for (let i = 0; i < checkboxArr.length; i++) {
+              const currentCheckbox = checkboxArr[i];
+              newCard.checklist.addEl(currentCheckbox);
+            }
+
             closeForm();
             populateDOM().populateContent(currentProject);
             break;
@@ -310,12 +456,23 @@ function populateDOM() {
       function addCheckbox() {
         const checkboxTitle = document.querySelector("#checkbox-title").value;
 
-        if (checkboxTitle === '') {
-          return
+        if (checkboxTitle === "" || isAdded()) {
+          return;
+        }
+
+        function isAdded() {
+          const listChildren = Array.from(checkBoxList.childNodes);
+
+          for (const child of listChildren) {
+            if (child.id === checkboxTitle) {
+              return true;
+            }
+          }
         }
 
         const checkboxField = document.createElement("div");
         checkboxField.classList.add("checkbox-field");
+        checkboxField.id = checkboxTitle;
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -330,6 +487,10 @@ function populateDOM() {
         checkboxField.appendChild(label);
 
         checkBoxList.appendChild(checkboxField);
+
+        document.querySelector("#checkbox-title").value = "";
+
+        checkboxArr.push(checkboxTitle);
       }
     }
   }

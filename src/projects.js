@@ -23,7 +23,9 @@ class Project {
   }
   
   addCard(title, date, desc, priority) {
-    this.cardArr.push(newCard(title, date, desc, priority));
+    const thisCard = newCard(title, date, desc, priority);
+    this.cardArr.push(thisCard);
+    return thisCard;
   }
   
   sortByDate() {
