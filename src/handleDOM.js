@@ -203,6 +203,8 @@ function populateDOM() {
       title.classList.add("current-project-title");
       title.textContent = project.title;
 
+      console.log(title)
+
       const btns = document.createElement("div");
       btns.classList.add("btns");
 
@@ -244,10 +246,12 @@ function handleDOMButtons(currentProject) {
 
   const addCardForm = document.querySelector(".form");
 
-  projectAdd.addEventListener("click", addCard);
+  projectAdd.addEventListener("click", cardForm);
   formClose.addEventListener("click", closeForm);
 
-  function addCard() {
+  addCard(currentProject);
+
+  function cardForm() {
     addCardForm.style.transform = 'scaleY(1)'
   }
 
@@ -258,7 +262,35 @@ function handleDOMButtons(currentProject) {
   function closeForm() {
     addCardForm.style.transform = 'scaleY(0)';
   }
+
+  function addCard(currentProject) {
+    const titleField = document.querySelector("#title-input");
+    const dateField = document.querySelector('#date-input');
+    const descField = document.querySelector('#description-input');
+    const priorityField = document.querySelector('#priority-input');
+  
+    const buttons = document.querySelector('.btns');
+  
+    buttons.addEventListener('click', (e) => {
+      const target = e.target;
+
+      console.log(target);
+  
+      switch (target.id) {
+        
+        case 'submit-btn': 
+        console.log('i work');
+        currentProject.addCard(titleField.value, dateField.value, descField.value, priorityField.value);
+        closeForm();
+        populateDOM().populateContent(currentProject);
+        break;
+        case 'close-btn': closeForm();
+        break;
+      }
+    })
+  }
 }
+
 
 let loadPage = populateDOM();
 
