@@ -116,24 +116,38 @@ function populateDOM() {
 
         const title = document.createElement("h3");
         title.textContent = element.getCard().title;
+        title.addEventListener('dblclick', () => {
+          const newCardTitle = document.createElement('input');
+          newCardTitle.classList.add('card-edit');
+
+          title.appendChild(newCardTitle);
+
+          newCardTitle.addEventListener('keydown', (e) => {
+            if (e.code === 'Enter') {
+              element.changeTitle(newCardTitle.value);
+              populateContent(project);
+            }
+          })
+        })
 
         const buttons = document.createElement("div");
         buttons.classList.add("buttons");
 
-        const cardEdit = document.createElement("div");
-        cardEdit.classList.add("card-edit");
-        cardEdit.addEventListener('click', () => {
-          const cardForm = document.querySelector('#add-card-form');
-          cardForm.style.transform = 'scaleY(1)'
+        // const cardEdit = document.createElement("div");
+        // cardEdit.classList.add("card-edit");
 
-          document.querySelector('#title-input').value = element.title;
-          console.log(new Date(element.date))
-          document.querySelector('#date-input').value = format(new Date(element.date), 'yyyy-MM-dd' );
-          document.querySelector('#description-input').value = element.description;
-          document.querySelector('#priority-input').value = element.priority;
+        // cardEdit.addEventListener('click', () => {
+        //   const cardForm = document.querySelector('#add-card-form');
+        //   cardForm.style.transform = 'scaleY(1)'
 
-          project.cardArr.splice(index, 1);
-        })
+        //   document.querySelector('#title-input').value = element.title;
+        //   console.log(new Date(element.date))
+        //   document.querySelector('#date-input').value = format(new Date(element.date), 'yyyy-MM-dd' );
+        //   document.querySelector('#description-input').value = element.description;
+        //   document.querySelector('#priority-input').value = element.priority;
+
+        //   project.cardArr.splice(index, 1);
+        // })
 
         const cardDelete = document.createElement("div");
         cardDelete.classList.add("card-delete");
@@ -145,6 +159,20 @@ function populateDOM() {
         const date = document.createElement("div");
         date.classList.add("date");
         date.textContent = element.getCard().date;
+        date.addEventListener('dblclick', () => {
+          const newCardDate = document.createElement('input');
+          newCardDate.type = 'date';
+          newCardDate.classList.add('card-edit');
+
+          date.appendChild(newCardDate);
+
+          newCardDate.addEventListener('keydown', (e) => {
+            if (e.code === 'Enter') {
+              element.changeDate(newCardDate.value);
+              populateContent(project);
+            }
+          })
+        })
 
         const priority = document.createElement("div");
         priority.classList.add("priority");
@@ -159,10 +187,24 @@ function populateDOM() {
             priority.textContent = "!!!";
             break;
         }
+        priority.addEventListener('dblclick', () => {
+          const newCardPriority = document.createElement('input');
+          newCardPriority.type = 'number';
+          newCardPriority.classList.add('card-edit');
+
+          priority.appendChild(newCardPriority);
+
+          newCardPriority.addEventListener('keydown', (e) => {
+            if (e.code === 'Enter') {
+              element.changePriority(newCardPriority.value);
+              populateContent(project);
+            }
+          })
+        })
 
         cardHeading.appendChild(title);
 
-        buttons.appendChild(cardEdit);
+        // buttons.appendChild(cardEdit);
         buttons.appendChild(cardDelete);
 
         cardHeading.appendChild(buttons);
@@ -177,6 +219,19 @@ function populateDOM() {
         const cardDesc = document.createElement("div");
         cardDesc.classList.add("card-desc");
         cardDesc.textContent = element.getCard().description;
+        cardDesc.addEventListener('dblclick', () => {
+          const newCardDesc = document.createElement('textarea');
+          newCardDesc.classList.add('card-edit');
+
+          cardDesc.appendChild(newCardDesc);
+
+          newCardDesc.addEventListener('keydown', (e) => {
+            if (e.code === 'Enter') {
+              element.changeDescription(newCardDesc.value);
+              populateContent(project);
+            }
+          })
+        })
 
         const checklist = document.createElement("div");
         checklist.classList.add("checklist");
