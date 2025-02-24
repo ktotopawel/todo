@@ -382,6 +382,7 @@ function populateDOM() {
 
     projectAdd.addEventListener("click", cardForm);
     formClose.addEventListener("click", closeForm);
+    projectDel.addEventListener("click", deleteProject);
 
     addCard(currentProject);
 
@@ -391,8 +392,16 @@ function populateDOM() {
 
     function editProject() {}
 
-    function deleteProject(currentProject) {
-      project
+    function deleteProject() {
+      const currentProjectIndex = projectsFn.projectArr.indexOf(currentProject);
+      console.log(currentProjectIndex);
+      projectsFn.projectArr.splice(currentProjectIndex, 1);
+      populateProjectList(projectsFn.projectArr);
+      if (projectsFn.projectArr.length > 0) {
+        populateContent(projectsFn.projectArr[currentProjectIndex]);
+      } else {
+        populateContent(projectsFn.newProject());
+      }
     }
 
     function closeForm() {
