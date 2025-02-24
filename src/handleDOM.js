@@ -235,6 +235,16 @@ function populateDOM() {
       main.appendChild(titlebar);
 
       handleDOMButtons(project);
+      generateEditTitle();
+
+      function generateEditTitle() {
+        const changeTitle = document.createElement('input');
+        changeTitle.type = 'text';
+        changeTitle.id = 'change-title';
+        changeTitle.placeholder = 'New Title...'
+
+        title.appendChild(changeTitle);
+      }
     }
 
     function generateAddCardForm() {
@@ -383,6 +393,8 @@ function populateDOM() {
     projectAdd.addEventListener("click", cardForm);
     formClose.addEventListener("click", closeForm);
     projectDel.addEventListener("click", deleteProject);
+    projectEdit.addEventListener('click', editProject)
+    
 
     addCard(currentProject);
 
@@ -390,7 +402,20 @@ function populateDOM() {
       addCardForm.style.transform = "scaleY(1)";
     }
 
-    function editProject() {}
+    function editProject() {
+      const changeTitle = document.querySelector('#change-title')
+
+      changeTitle.style.transform = 'scaleX(1)';
+
+      changeTitle.addEventListener('keydown', (e) => {
+        if (e.code === 'Enter') {
+          currentProject.changeTitle(changeTitle.value);
+
+          populateProjectList(projectsFn.projectArr);
+          populateContent(currentProject);
+        }
+      })
+    }
 
     function deleteProject() {
       const currentProjectIndex = projectsFn.projectArr.indexOf(currentProject);

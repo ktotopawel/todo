@@ -244,6 +244,27 @@ ul {
   align-items: center;
   height: var(--titlebar-height);
 
+  & h2 {
+    position: relative;
+  }
+
+  & #change-title {
+    background: var(--theme);
+    outline: none;
+    border: none;
+    color: var(--black);
+    position: absolute;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms ease-in;
+
+    &::placeholder {
+      color: var(--black);
+      opacity: 75%;
+    }
+  }
+
   & .btns {
     margin-left: auto;
     display: flex;

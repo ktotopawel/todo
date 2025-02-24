@@ -21,6 +21,10 @@ class Project {
     this.title = title;
     this.cardArr = [];
   }
+
+  changeTitle(newTitle) {
+    this.title = newTitle;
+  }
   
   addCard(title, date, desc, priority) {
     const thisCard = newCard(title, date, desc, priority);
