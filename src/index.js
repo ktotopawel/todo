@@ -12,7 +12,7 @@ myProject.addCard("baca", "2026-03-22", "myDesc", "1");
 myProject.addCard("PTitle3", "2025-07-22", "myDesc", "2");
 myProject.addCard("PTitle4", "2025-03-23", "myDesc", "1");
 myProject.addCard("acabv", "2025-04-22", "myDesc", "3");
-myProject.addCard("PTitle6", "2025-01-22", "myDesc", "1");
+myProject.addCard("PTitle6", "2025-02-25", "myDesc", "1");
 
 const myProject2 = projects.newProject("myTitle2");
 
@@ -44,4 +44,5 @@ projectsList.addEventListener("click", () => {
 
 loadPage.populateProjectList(projects.projectArr);
 
-loadPage.populateContent(myProject);
+loadPage.populateContent(myProject).initializeProjectDisplay();
+loadPage.populateContent(myProject).initializeUpcomingDisplay();

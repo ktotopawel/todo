@@ -346,11 +346,37 @@ ul {
 
     h3 {
       font-size: 1.5rem;
+      position: relative;
+
+      & input {
+        position: absolute;
+        left: 0;
+        max-height: 100%;
+        background: var(--theme);
+        filter: brightness(80%);
+        border: none;
+        outline: none;
+        max-width: 75%;
+        border-radius: 0.5rem;
+        padding: 0 0.5rem;
+      }
     }
 
     .date {
+      position: relative;
       display: inline-block;
       font-style: italic;
+
+      & input {
+        position: absolute;
+        left: 0;
+        max-height: 100%;
+        background: var(--theme);
+        border: none;
+        outline: none;
+        filter: brightness(80%);
+        border-radius: 0.5rem;
+      }
     }
 
     .priority {
@@ -359,6 +385,18 @@ ul {
       bottom: 0.5rem;
       font-weight: 900;
       font-size: 1.25rem;
+
+      & input {
+        position: absolute;
+        right: 0;
+        max-height: 100%;
+        width: 3rem;
+        background: var(--theme);
+        border: none;
+        outline: none;
+        filter: brightness(80%);
+        border-radius: 0.5rem;
+      }
     }
   }
 
@@ -371,6 +409,23 @@ ul {
     flex-direction: column;
     gap: 1rem;
     flex: 1;
+
+    & .card-desc {
+      position: relative;
+      & textarea {
+        position: absolute;
+        left: 0;
+        max-height: 100%;
+        width: 100%;
+        background: var(--white);
+        border: none;
+        outline: none;
+        filter: brightness(80%);
+        border-radius: 0.5rem;
+        resize: none;
+        overflow: hidden;
+      }
+    }
   }
 
   .checklist {
@@ -539,6 +594,30 @@ dialog.card {
       font-weight: 900;
       border-radius: 50%;
       cursor: pointer;
+    }
+  }
+}
+
+.upcoming-display {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  padding: var(--default-padding);
+  gap: 1rem;
+  height: 100%;
+  
+  .this-week, .this-month {
+    background: var(--white);
+    border: 3px solid var(--theme);
+    border-radius: 0.5rem;
+    
+    h2 {
+      background: var(--theme);
+      padding: 0.5rem 1rem;
+    }
+
+    .week-display, .month-display {
+      padding: 1rem;
     }
   }
 }

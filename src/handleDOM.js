@@ -1,4 +1,4 @@
-import { format, isBefore } from "date-fns";
+import { format, isBefore, isThisWeek } from "date-fns";
 import projectsFn from "./projects";
 
 function populateDOM() {
@@ -90,10 +90,20 @@ function populateDOM() {
   function populateContent(project) {
     const main = document.querySelector("#content");
 
-    clearContent();
-    generateAddCardForm();
-    generateTitleSection();
-    generateCards();
+    //i need this in a function so i can call it in index.js
+    function initializeProjectDisplay() {
+      const projectCards = project.cardArr;
+
+      clearContent();
+      generateAddCardForm();
+      generateTitleSection();
+      generateCards();
+    }
+
+    function initializeUpcomingDisplay() {
+      clearContent();
+      generateUpcoming();
+    }
 
     function clearContent() {
       while (main.firstChild) {
@@ -101,7 +111,7 @@ function populateDOM() {
       }
     }
     //generates the card ToDo display
-    function generateCards() {
+    function generateCards(cardsArr) {
       const cards = document.createElement("div");
       cards.classList.add("cards");
 
@@ -119,6 +129,7 @@ function populateDOM() {
         title.addEventListener('dblclick', () => {
           const newCardTitle = document.createElement('input');
           newCardTitle.classList.add('card-edit');
+          newCardTitle.value = element.getCard().title;
 
           title.appendChild(newCardTitle);
 
@@ -132,22 +143,6 @@ function populateDOM() {
 
         const buttons = document.createElement("div");
         buttons.classList.add("buttons");
-
-        // const cardEdit = document.createElement("div");
-        // cardEdit.classList.add("card-edit");
-
-        // cardEdit.addEventListener('click', () => {
-        //   const cardForm = document.querySelector('#add-card-form');
-        //   cardForm.style.transform = 'scaleY(1)'
-
-        //   document.querySelector('#title-input').value = element.title;
-        //   console.log(new Date(element.date))
-        //   document.querySelector('#date-input').value = format(new Date(element.date), 'yyyy-MM-dd' );
-        //   document.querySelector('#description-input').value = element.description;
-        //   document.querySelector('#priority-input').value = element.priority;
-
-        //   project.cardArr.splice(index, 1);
-        // })
 
         const cardDelete = document.createElement("div");
         cardDelete.classList.add("card-delete");
@@ -163,6 +158,7 @@ function populateDOM() {
           const newCardDate = document.createElement('input');
           newCardDate.type = 'date';
           newCardDate.classList.add('card-edit');
+          // newCardDate.value = format(element.getCard().date, 'yyyy-MM-dd')
 
           date.appendChild(newCardDate);
 
@@ -189,8 +185,10 @@ function populateDOM() {
         }
         priority.addEventListener('dblclick', () => {
           const newCardPriority = document.createElement('input');
-          newCardPriority.type = 'number';
+          newCardPriority.type = 'tel';
           newCardPriority.classList.add('card-edit');
+          newCardPriority.min = 1;
+          newCardPriority.max = 3;
 
           priority.appendChild(newCardPriority);
 
@@ -440,6 +438,71 @@ function populateDOM() {
       formBg.appendChild(form);
 
       main.appendChild(formBg);
+    }
+
+    function generateUpcoming() {
+      fillThisWeekDisplay();
+
+      const upcomingDisplay = document.createElement('div');
+      upcomingDisplay.classList.add('upcoming-display');
+      main.appendChild(upcomingDisplay);
+
+      const thisWeek = document.createElement('div');
+      thisWeek.classList.add('this-week');
+      upcomingDisplay.appendChild(thisWeek);
+
+      const thisWeekHeading = document.createElement('h2');
+      thisWeekHeading.textContent = 'This week';
+      thisWeek.appendChild(thisWeekHeading);
+
+      const weekDisplay = document.createElement('div');
+      weekDisplay.classList.add('week-display');
+      thisWeek.appendChild(weekDisplay);
+
+      const thisMonth = document.createElement('div');
+      thisMonth.classList.add('this-month');
+      upcomingDisplay.appendChild(thisMonth);
+
+      const monthHeading = document.createElement('h2');
+      monthHeading.textContent = 'This month';
+      thisMonth.appendChild(monthHeading);
+
+      const monthDisplay = document.createElement('div');
+      monthDisplay.classList.add('month-display');
+      thisMonth.appendChild(monthDisplay);
+
+      function getAllCards() {
+        const allCards = [];
+
+        const projectsArr = projectsFn.projectArr;
+
+        projectsArr.map((project) => {
+          project.cardArr.map((card) => {
+            allCards.push(card);
+          })
+        })
+
+        return allCards;
+      }
+
+      function fillThisWeekDisplay () {
+        const allCards = getAllCards();
+
+        const thisWeekCards = allCards.filter((card) => {
+          if (isThisWeek(card.date)) {
+            return card;
+          }
+        })
+
+
+
+        console.log('this week cards:', thisWeekCards);
+      }
+    }
+
+    return {
+      initializeProjectDisplay,
+      initializeUpcomingDisplay
     }
   }
   //handles different button presses on the project display
