@@ -1,4 +1,4 @@
-import { isBefore } from "date-fns";
+import { format, isBefore } from "date-fns";
 import projectsFn from "./projects";
 
 function populateDOM() {
@@ -122,6 +122,18 @@ function populateDOM() {
 
         const cardEdit = document.createElement("div");
         cardEdit.classList.add("card-edit");
+        cardEdit.addEventListener('click', () => {
+          const cardForm = document.querySelector('#add-card-form');
+          cardForm.style.transform = 'scaleY(1)'
+
+          document.querySelector('#title-input').value = element.title;
+          console.log(new Date(element.date))
+          document.querySelector('#date-input').value = format(new Date(element.date), 'yyyy-MM-dd' );
+          document.querySelector('#description-input').value = element.description;
+          document.querySelector('#priority-input').value = element.priority;
+
+          project.cardArr.splice(index, 1);
+        })
 
         const cardDelete = document.createElement("div");
         cardDelete.classList.add("card-delete");
@@ -425,6 +437,7 @@ function populateDOM() {
       if (projectsFn.projectArr.length > 0) {
         populateContent(projectsFn.projectArr[currentProjectIndex]);
       } else {
+        //placeholder
         populateContent(projectsFn.newProject());
       }
     }

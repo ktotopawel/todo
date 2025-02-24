@@ -42,24 +42,24 @@ class Todo {
       checklist: this.checklist,
     });
   }
-  changeTitle(newTitle) {
-    this.title = newTitle;
-  }
+  // changeTitle(newTitle) {
+  //   this.title = newTitle;
+  // }
 
-  changeDate(newDate) {
-    this.date = new Date(newDate);
-  }
-  changeDescription(newDesc) {
-    if (typeof newDesc == "string") {
-      this.description = newDesc;
-    }
-  }
+  // changeDate(newDate) {
+  //   this.date = new Date(newDate);
+  // }
+  // changeDescription(newDesc) {
+  //   if (typeof newDesc == "string") {
+  //     this.description = newDesc;
+  //   }
+  // }
 
-  changePriority(newPriority) {
-    if (["1", "2", "3"].includes(newPriority)) {
-      this.priority = newPriority;
-    }
-  }
+  // changePriority(newPriority) {
+  //   if (["1", "2", "3"].includes(newPriority)) {
+  //     this.priority = newPriority;
+  //   }
+  // }
 
   accessChecklist() {
     return this.checklist;
