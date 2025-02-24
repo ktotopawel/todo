@@ -27,7 +27,6 @@ function populateDOM() {
       const element = document.createElement("li");
       element.textContent = project.title;
       element.id = project.title;
-      // element.addEventListener('click', createContent() )
 
       projectList.prepend(element);
 
@@ -126,6 +125,10 @@ function populateDOM() {
 
         const cardDelete = document.createElement("div");
         cardDelete.classList.add("card-delete");
+        cardDelete.addEventListener('click', () => {
+          project.cardArr.splice([index], 1);
+          populateContent(project);
+        })
 
         const date = document.createElement("div");
         date.classList.add("date");
@@ -388,7 +391,9 @@ function populateDOM() {
 
     function editProject() {}
 
-    function deleteProject() {}
+    function deleteProject(currentProject) {
+      project
+    }
 
     function closeForm() {
       addCardForm.style.transform = "scaleY(0)";
