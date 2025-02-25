@@ -298,7 +298,7 @@ ul {
 .cards {
   padding: var(--default-padding);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
   overflow: auto;
   max-height: calc(100vh - var(--titlebar-height));
@@ -429,10 +429,10 @@ ul {
   }
 
   .checklist {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin: 0 1rem;
 
     & div {
       display: flex;
@@ -447,6 +447,15 @@ ul {
       }
     }
   }
+}
+
+.checklist::before {
+  content: "";
+  height: 3px;
+  background: var(--theme);
+  top: 0;
+  margin-bottom: 0.5rem;
+  border-radius: 1.5px;
 }
 
 dialog {
@@ -605,19 +614,16 @@ dialog.card {
   padding: var(--default-padding);
   gap: 1rem;
   height: 100%;
-  
-  .this-week, .this-month {
+
+  .this-week,
+  .this-month {
     background: var(--white);
     border: 3px solid var(--theme);
     border-radius: 0.5rem;
-    
+
     h2 {
       background: var(--theme);
       padding: 0.5rem 1rem;
-    }
-
-    .week-display, .month-display {
-      padding: 1rem;
     }
   }
 }

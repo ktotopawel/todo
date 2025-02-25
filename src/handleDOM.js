@@ -1,4 +1,4 @@
-import { format, isBefore, isThisWeek } from "date-fns";
+import { format, isBefore, isThisMonth, isThisWeek } from "date-fns";
 import projectsFn from "./projects";
 
 function populateDOM() {
@@ -31,7 +31,7 @@ function populateDOM() {
       projectList.prepend(element);
 
       element.addEventListener("click", () => {
-        populateContent(project);
+        populateContent(project).initializeProjectDisplay();
       });
     }
 
@@ -62,7 +62,7 @@ function populateDOM() {
 
       const addedProject = projectsFn.newProject(input);
 
-      populateContent(addedProject);
+      populateContent(addedProject).initializeProjectDisplay();
       populateProjectList(projectsFn.projectArr);
 
       projectDialog.classList.remove("active");
@@ -97,7 +97,7 @@ function populateDOM() {
       clearContent();
       generateAddCardForm();
       generateTitleSection();
-      generateCards();
+      generateCards(projectCards, main);
     }
 
     function initializeUpcomingDisplay() {
@@ -111,12 +111,12 @@ function populateDOM() {
       }
     }
     //generates the card ToDo display
-    function generateCards(cardsArr) {
+    function generateCards(cardsArr, appendTo) {
       const cards = document.createElement("div");
       cards.classList.add("cards");
 
-      for (let index = 0; index < project.cardArr.length; index++) {
-        const element = project.cardArr[index];
+      for (let index = 0; index < cardsArr.length; index++) {
+        const element = cardsArr[index];
 
         const card = document.createElement("div");
         card.classList.add("card");
@@ -126,49 +126,49 @@ function populateDOM() {
 
         const title = document.createElement("h3");
         title.textContent = element.getCard().title;
-        title.addEventListener('dblclick', () => {
-          const newCardTitle = document.createElement('input');
-          newCardTitle.classList.add('card-edit');
+        title.addEventListener("dblclick", () => {
+          const newCardTitle = document.createElement("input");
+          newCardTitle.classList.add("card-edit");
           newCardTitle.value = element.getCard().title;
 
           title.appendChild(newCardTitle);
 
-          newCardTitle.addEventListener('keydown', (e) => {
-            if (e.code === 'Enter') {
+          newCardTitle.addEventListener("keydown", (e) => {
+            if (e.code === "Enter") {
               element.changeTitle(newCardTitle.value);
-              populateContent(project);
+              populateContent(project).initializeProjectDisplay();
             }
-          })
-        })
+          });
+        });
 
         const buttons = document.createElement("div");
         buttons.classList.add("buttons");
 
         const cardDelete = document.createElement("div");
         cardDelete.classList.add("card-delete");
-        cardDelete.addEventListener('click', () => {
-          project.cardArr.splice([index], 1);
-          populateContent(project);
-        })
+        cardDelete.addEventListener("click", () => {
+          cardsArr.splice([index], 1);
+          populateContent(project).initializeProjectDisplay();
+        });
 
         const date = document.createElement("div");
         date.classList.add("date");
         date.textContent = element.getCard().date;
-        date.addEventListener('dblclick', () => {
-          const newCardDate = document.createElement('input');
-          newCardDate.type = 'date';
-          newCardDate.classList.add('card-edit');
+        date.addEventListener("dblclick", () => {
+          const newCardDate = document.createElement("input");
+          newCardDate.type = "date";
+          newCardDate.classList.add("card-edit");
           // newCardDate.value = format(element.getCard().date, 'yyyy-MM-dd')
 
           date.appendChild(newCardDate);
 
-          newCardDate.addEventListener('keydown', (e) => {
-            if (e.code === 'Enter') {
+          newCardDate.addEventListener("keydown", (e) => {
+            if (e.code === "Enter") {
               element.changeDate(newCardDate.value);
-              populateContent(project);
+              populateContent(project).initializeProjectDisplay();
             }
-          })
-        })
+          });
+        });
 
         const priority = document.createElement("div");
         priority.classList.add("priority");
@@ -183,22 +183,22 @@ function populateDOM() {
             priority.textContent = "!!!";
             break;
         }
-        priority.addEventListener('dblclick', () => {
-          const newCardPriority = document.createElement('input');
-          newCardPriority.type = 'tel';
-          newCardPriority.classList.add('card-edit');
+        priority.addEventListener("dblclick", () => {
+          const newCardPriority = document.createElement("input");
+          newCardPriority.type = "tel";
+          newCardPriority.classList.add("card-edit");
           newCardPriority.min = 1;
           newCardPriority.max = 3;
 
           priority.appendChild(newCardPriority);
 
-          newCardPriority.addEventListener('keydown', (e) => {
-            if (e.code === 'Enter') {
+          newCardPriority.addEventListener("keydown", (e) => {
+            if (e.code === "Enter") {
               element.changePriority(newCardPriority.value);
-              populateContent(project);
+              populateContent(project).initializeProjectDisplay();
             }
-          })
-        })
+          });
+        });
 
         cardHeading.appendChild(title);
 
@@ -217,19 +217,19 @@ function populateDOM() {
         const cardDesc = document.createElement("div");
         cardDesc.classList.add("card-desc");
         cardDesc.textContent = element.getCard().description;
-        cardDesc.addEventListener('dblclick', () => {
-          const newCardDesc = document.createElement('textarea');
-          newCardDesc.classList.add('card-edit');
+        cardDesc.addEventListener("dblclick", () => {
+          const newCardDesc = document.createElement("textarea");
+          newCardDesc.classList.add("card-edit");
 
           cardDesc.appendChild(newCardDesc);
 
-          newCardDesc.addEventListener('keydown', (e) => {
-            if (e.code === 'Enter') {
+          newCardDesc.addEventListener("keydown", (e) => {
+            if (e.code === "Enter") {
               element.changeDescription(newCardDesc.value);
-              populateContent(project);
+              populateContent(project).initializeProjectDisplay();
             }
-          })
-        })
+          });
+        });
 
         const checklist = document.createElement("div");
         checklist.classList.add("checklist");
@@ -267,7 +267,7 @@ function populateDOM() {
 
         cards.appendChild(card);
       }
-      main.appendChild(cards);
+      appendTo.appendChild(cards);
     }
     //generates the title section of the project display
     function generateTitleSection() {
@@ -303,10 +303,10 @@ function populateDOM() {
       generateEditTitle();
 
       function generateEditTitle() {
-        const changeTitle = document.createElement('input');
-        changeTitle.type = 'text';
-        changeTitle.id = 'change-title';
-        changeTitle.placeholder = 'New Title...'
+        const changeTitle = document.createElement("input");
+        changeTitle.type = "text";
+        changeTitle.id = "change-title";
+        changeTitle.placeholder = "New Title...";
 
         title.appendChild(changeTitle);
       }
@@ -441,35 +441,36 @@ function populateDOM() {
     }
 
     function generateUpcoming() {
-      fillThisWeekDisplay();
-
-      const upcomingDisplay = document.createElement('div');
-      upcomingDisplay.classList.add('upcoming-display');
+      const upcomingDisplay = document.createElement("div");
+      upcomingDisplay.classList.add("upcoming-display");
       main.appendChild(upcomingDisplay);
 
-      const thisWeek = document.createElement('div');
-      thisWeek.classList.add('this-week');
+      const thisWeek = document.createElement("div");
+      thisWeek.classList.add("this-week");
       upcomingDisplay.appendChild(thisWeek);
 
-      const thisWeekHeading = document.createElement('h2');
-      thisWeekHeading.textContent = 'This week';
+      const thisWeekHeading = document.createElement("h2");
+      thisWeekHeading.textContent = "This week";
       thisWeek.appendChild(thisWeekHeading);
 
-      const weekDisplay = document.createElement('div');
-      weekDisplay.classList.add('week-display');
+      const weekDisplay = document.createElement("div");
+      weekDisplay.classList.add("week-display");
       thisWeek.appendChild(weekDisplay);
 
-      const thisMonth = document.createElement('div');
-      thisMonth.classList.add('this-month');
+      const thisMonth = document.createElement("div");
+      thisMonth.classList.add("this-month");
       upcomingDisplay.appendChild(thisMonth);
 
-      const monthHeading = document.createElement('h2');
-      monthHeading.textContent = 'This month';
+      const monthHeading = document.createElement("h2");
+      monthHeading.textContent = "This month";
       thisMonth.appendChild(monthHeading);
 
-      const monthDisplay = document.createElement('div');
-      monthDisplay.classList.add('month-display');
+      const monthDisplay = document.createElement("div");
+      monthDisplay.classList.add("month-display");
       thisMonth.appendChild(monthDisplay);
+
+      fillThisWeekDisplay();
+      fillThisMonthDisplay();
 
       function getAllCards() {
         const allCards = [];
@@ -479,34 +480,47 @@ function populateDOM() {
         projectsArr.map((project) => {
           project.cardArr.map((card) => {
             allCards.push(card);
-          })
-        })
+          });
+        });
 
         return allCards;
       }
 
-      function fillThisWeekDisplay () {
+      function fillThisWeekDisplay() {
         const allCards = getAllCards();
 
         const thisWeekCards = allCards.filter((card) => {
           if (isThisWeek(card.date)) {
             return card;
           }
-        })
+        });
 
+        generateCards(thisWeekCards, weekDisplay);
+      }
 
+      function fillThisMonthDisplay() {
+        const allCards = getAllCards();
 
-        console.log('this week cards:', thisWeekCards);
+        const thisMonthCards = allCards.filter((card) => {
+          if (isThisMonth(card.date)) {
+            return card;
+          }
+        });
+
+        generateCards(thisMonthCards, monthDisplay);
       }
     }
 
     return {
       initializeProjectDisplay,
-      initializeUpcomingDisplay
-    }
+      initializeUpcomingDisplay,
+    };
   }
   //handles different button presses on the project display
   function handleDOMButtons(currentProject) {
+    const projectsList = document.querySelector(".project-list-btn");
+    const upcoming = document.querySelector(".upcoming");
+
     const projectAdd = document.querySelector("#add");
     const projectEdit = document.querySelector("#edit");
     const projectDel = document.querySelector("#delete");
@@ -523,28 +537,48 @@ function populateDOM() {
     projectAdd.addEventListener("click", cardForm);
     formClose.addEventListener("click", closeForm);
     projectDel.addEventListener("click", deleteProject);
-    projectEdit.addEventListener('click', editProject)
-    
+    projectEdit.addEventListener("click", editProject);
 
     addCard(currentProject);
+
+    upcoming.addEventListener("click", () => {
+      populateContent().initializeUpcomingDisplay();
+    })
+
+    projectsList.addEventListener("click", () => {
+      const list = document.querySelector(".project-list");
+      const dropdownArrow = document.querySelector("#dropdown-icon");
+
+      if (list.style.maxHeight) {
+        list.style.maxHeight = null;
+      } else {
+        list.style.maxHeight = list.scrollHeight + "px";
+      }
+
+      if (dropdownArrow.style.transform == "rotateZ(90deg)") {
+        dropdownArrow.style.transform = "rotateZ(0deg)";
+      } else {
+        dropdownArrow.style.transform = "rotateZ(90deg)";
+      }
+    });
 
     function cardForm() {
       addCardForm.style.transform = "scaleY(1)";
     }
 
     function editProject() {
-      const changeTitle = document.querySelector('#change-title')
+      const changeTitle = document.querySelector("#change-title");
 
-      changeTitle.style.transform = 'scaleX(1)';
+      changeTitle.style.transform = "scaleX(1)";
 
-      changeTitle.addEventListener('keydown', (e) => {
-        if (e.code === 'Enter') {
+      changeTitle.addEventListener("keydown", (e) => {
+        if (e.code === "Enter") {
           currentProject.changeTitle(changeTitle.value);
 
           populateProjectList(projectsFn.projectArr);
-          populateContent(currentProject);
+          populateContent(currentProject).initializeProjectDisplay();
         }
-      })
+      });
     }
 
     function deleteProject() {
@@ -553,10 +587,12 @@ function populateDOM() {
       projectsFn.projectArr.splice(currentProjectIndex, 1);
       populateProjectList(projectsFn.projectArr);
       if (projectsFn.projectArr.length > 0) {
-        populateContent(projectsFn.projectArr[currentProjectIndex]);
+        populateContent(
+          projectsFn.projectArr[currentProjectIndex]
+        ).initializeProjectDisplay();
       } else {
         //placeholder
-        populateContent(projectsFn.newProject());
+        populateContent(projectsFn.newProject()).initializeProjectDisplay();
       }
     }
 
@@ -607,7 +643,9 @@ function populateDOM() {
             }
 
             closeForm();
-            populateDOM().populateContent(currentProject);
+            populateDOM()
+              .populateContent(currentProject)
+              .initializeProjectDisplay();
             break;
           case "close-btn":
             closeForm();
