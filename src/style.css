@@ -68,10 +68,16 @@ h6 {
 
   --default-padding: 1rem 1.5rem;
 
-  --highlight: #f8c7cc;
+  --highlight: #DCDEA1;
+  --theme-light: #A2A3BB;
+  --theme: #7B90B7;
+  --theme-dark: #34435E;
+
+  /* --highlight: #FFA69E;
   --theme-light: #e1f4cb;
   --theme: #81b29a;
-  --theme-dark: #466060;
+  --theme-dark: #466060; */
+
   --black: #242124;
   --white: #fffdfa;
 
@@ -318,6 +324,54 @@ ul {
     border-radius: 0.5rem;
     margin: 0.5rem;
     flex: none;
+
+    &.mid-important {
+      background: var(--theme);
+
+      background: linear-gradient(
+        0deg,
+        var(--theme) 50%,
+        var(--highlight) 100%
+      );
+
+      background: -moz-linear-gradient(
+        0deg,
+        var(--theme) 50%,
+        var(--highlight) 100%
+      );
+
+      background: -webkit-linear-gradient(
+        0deg,
+        var(--theme) 50%,
+        var(--highlight) 100%
+      );
+
+      filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#81B29A", endColorstr="#F8C7CC", GradientType=1 );
+    }
+
+    &.hi-important {
+      background: var(--theme);
+
+      background: linear-gradient(
+        0deg,
+        var(--theme) 25%,
+        var(--highlight) 100%
+      );
+
+      background: -moz-linear-gradient(
+        0deg,
+        var(--theme) 25%,
+        var(--highlight) 100%
+      );
+
+      background: -webkit-linear-gradient(
+        0deg,
+        var(--theme) 25%,
+        var(--highlight) 100%
+      );
+
+      filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#81B29A", endColorstr="#F8C7CC", GradientType=1 );
+    }
 
     .buttons {
       position: absolute;

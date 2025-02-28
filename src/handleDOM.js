@@ -1,4 +1,4 @@
-import { format, isBefore, isThisMonth, isThisWeek } from "date-fns";
+import { isBefore, isThisMonth, isThisWeek } from "date-fns";
 import projectsFn from "./projects";
 
 function populateDOM() {
@@ -92,8 +92,6 @@ function populateDOM() {
 
     //i need this in a function so i can call it in index.js
     function initializeProjectDisplay() {
-      console.log (project);
-      console.log(project.cardArr);
       const projectCards = project.cardArr;
 
       projectsFn.updateStorage();
@@ -145,9 +143,12 @@ function populateDOM() {
             break;
           case "2":
             priority.textContent = "!!";
+            cardHeading.classList.add('mid-important');
             break;
           case "3":
             priority.textContent = "!!!";
+            cardHeading.classList.add('hi-important');
+
             break;
         }
 
@@ -192,6 +193,7 @@ function populateDOM() {
 
           checkbox.addEventListener("click", () => {
             checkElement.done = checkbox.checked;
+            projectsFn.updateStorage();
           });
         }
         cardContent.appendChild(cardDesc);
@@ -601,7 +603,11 @@ function populateDOM() {
       populateProjectList(projectsFn.projectArr);
       if (projectsFn.projectArr.length > 0) {
         populateContent(
-          projectsFn.projectArr[(currentProjectIndex == 0 ? currentProjectIndex : currentProjectIndex - 1)]
+          projectsFn.projectArr[
+            currentProjectIndex == 0
+              ? currentProjectIndex
+              : currentProjectIndex - 1
+          ]
         ).initializeProjectDisplay();
       } else {
         //placeholder

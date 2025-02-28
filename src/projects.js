@@ -47,26 +47,48 @@ function projects() {
   function checkProjectStorage() {
     //first run of the page
     if (localStorage.getItem("projectsArr") === null) {
-      const myProject = newProject("myTitle");
+      const myProject = newProject("My Project");
 
-      myProject.addCard("PTitle1", "2025-03-22", "myDesc", "1");
-      myProject.cardArr[0].accessChecklist().addEl("jebać", false);
-      myProject.cardArr[0].accessChecklist().addEl("srać", true);
+      myProject.addCard("Checklist Todo", "2025-03-22", "", "3");
+      myProject.cardArr[0].accessChecklist().addEl("Not Done", false);
+      myProject.cardArr[0].accessChecklist().addEl("Done", true);
 
-      myProject.addCard("baca", "2026-03-22", "myDesc", "1");
-      myProject.addCard("PTitle3", "2025-07-22", "myDesc", "2");
-      myProject.addCard("PTitle4", "2025-03-23", "myDesc", "1");
-      myProject.addCard("acabv", "2025-02-22", "myDesc", "3");
-      myProject.addCard("PTitle6", "2025-02-25", "myDesc", "1");
+      myProject.addCard(
+        "Not Important ToDo",
+        "2026-03-22",
+        "Some made up description",
+        "1"
+      );
+      myProject.addCard(
+        "Important ToDo",
+        "2025-07-22",
+        "This one is not as important as the next one",
+        "2"
+      );
+      myProject.addCard(
+        "Very Important ToDo",
+        "2025-03-23",
+        "This one is the most important!",
+        "3"
+      );
+      myProject.addCard(
+        "Edit this!",
+        "2025-02-22",
+        "You can edit everything by double clicking it",
+        "3"
+      );
 
-      const myProject2 = newProject("myTitle2");
+      const myProject2 = newProject("My Other Project");
 
-      myProject2.addCard("PTitle1", "2025-03-22", "myDesc", "1");
-      myProject2.addCard("PTitle2", "2026-03-22", "myDesc", "1");
-      myProject2.addCard("PTitle3", "2025-07-22", "myDesc", "2");
+      myProject2.addCard("Coming features", "2025-03-22", "Coming soon", "1");
+      myProject2.addCard(
+        "Sorting",
+        "2026-03-22",
+        "By date and importance",
+        "3"
+      );
+      myProject2.addCard("And others", "2025-07-22", "", "2");
       myProject2.addCard("lolek", "2025-03-23", "myDesc", "1");
-      myProject2.addCard("PTitle5", "2025-02-22", "myDesc", "3");
-      myProject2.addCard("PTitle6", "2025-01-22", "myDesc", "1");
 
       updateStorage();
     } else {
@@ -76,8 +98,6 @@ function projects() {
       storedArray.forEach((project) => {
         projectArr.push(Project.fromObject(project));
       });
-      console.log("stored array", storedArray);
-      console.log("parsed array", projectArr);
     }
   }
 
@@ -92,7 +112,6 @@ function projects() {
   function updateStorage() {
     const newProjectArray = projectArr;
 
-    console.log("newProjectArr", newProjectArray);
     localStorage.setItem("projectsArr", JSON.stringify(projectArr));
   }
 
