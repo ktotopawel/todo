@@ -1,5 +1,4 @@
-import { format, formatRelative, isToday } from "date-fns";
-import { enGB } from "date-fns/locale";
+import { format,  } from "date-fns";
 
 export default function newCard(title, date, description, priority) {
   return new Todo(title, date, description, priority);
@@ -14,6 +13,13 @@ class Todo {
     this.checklist = new Checklist();
   }
 
+  static fromObject(obj) {
+    const todo = new Todo(obj.title, obj.date, obj.description, obj.priority);
+    todo.checklist = Checklist.fromObject(obj.checklist);
+    return todo;
+  }
+
+
   getCard() {
     return {
       title: this.title,
@@ -24,24 +30,6 @@ class Todo {
     }
   }
 
-  timeLeft() {
-    // console.log(this.date);
-    return formatRelative(this.date, new Date(), { locale: enGB });
-  }
-
-  isToday() {
-    return isToday(this.date);
-  }
-
-  printCard() {
-    console.log({
-      title: this.title,
-      date: this.date,
-      description: this.description,
-      priority: this.priority,
-      checklist: this.checklist,
-    });
-  }
   changeTitle(newTitle) {
     this.title = newTitle;
   }
@@ -49,6 +37,7 @@ class Todo {
   changeDate(newDate) {
     this.date = new Date(newDate);
   }
+
   changeDescription(newDesc) {
     if (typeof newDesc == "string") {
       this.description = newDesc;
@@ -78,6 +67,12 @@ class Checklist {
   removeEl(index) {
     this.list.splice(index, 1);
   }
+
+  static fromObject(obj) {
+    const checklist = new Checklist();
+    checklist.list = obj.list.map(item => ChecklistEl.fromObject(item));
+    return checklist;
+  }
 }
 
 class ChecklistEl {
@@ -89,4 +84,10 @@ class ChecklistEl {
   changeDone() {
     this.done = !this.done;
   }
+
+  static fromObject(obj) {
+    return new ChecklistEl(obj.text, obj.done);
+  }
 }
+
+export { Todo };

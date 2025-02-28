@@ -92,8 +92,11 @@ function populateDOM() {
 
     //i need this in a function so i can call it in index.js
     function initializeProjectDisplay() {
+      console.log (project);
+      console.log(project.cardArr);
       const projectCards = project.cardArr;
 
+      projectsFn.updateStorage();
       clearContent();
       generateAddCardForm();
       generateTitleSection();
@@ -126,49 +129,13 @@ function populateDOM() {
 
         const title = document.createElement("h3");
         title.textContent = element.getCard().title;
-        title.addEventListener("dblclick", () => {
-          const newCardTitle = document.createElement("input");
-          newCardTitle.classList.add("card-edit");
-          newCardTitle.value = element.getCard().title;
-
-          title.appendChild(newCardTitle);
-
-          newCardTitle.addEventListener("keydown", (e) => {
-            if (e.code === "Enter") {
-              element.changeTitle(newCardTitle.value);
-              populateContent(project).initializeProjectDisplay();
-            }
-          });
-        });
 
         const buttons = document.createElement("div");
         buttons.classList.add("buttons");
 
-        const cardDelete = document.createElement("div");
-        cardDelete.classList.add("card-delete");
-        cardDelete.addEventListener("click", () => {
-          cardsArr.splice([index], 1);
-          populateContent(project).initializeProjectDisplay();
-        });
-
         const date = document.createElement("div");
         date.classList.add("date");
         date.textContent = element.getCard().date;
-        date.addEventListener("dblclick", () => {
-          const newCardDate = document.createElement("input");
-          newCardDate.type = "date";
-          newCardDate.classList.add("card-edit");
-          // newCardDate.value = format(element.getCard().date, 'yyyy-MM-dd')
-
-          date.appendChild(newCardDate);
-
-          newCardDate.addEventListener("keydown", (e) => {
-            if (e.code === "Enter") {
-              element.changeDate(newCardDate.value);
-              populateContent(project).initializeProjectDisplay();
-            }
-          });
-        });
 
         const priority = document.createElement("div");
         priority.classList.add("priority");
@@ -183,27 +150,8 @@ function populateDOM() {
             priority.textContent = "!!!";
             break;
         }
-        priority.addEventListener("dblclick", () => {
-          const newCardPriority = document.createElement("input");
-          newCardPriority.type = "tel";
-          newCardPriority.classList.add("card-edit");
-          newCardPriority.min = 1;
-          newCardPriority.max = 3;
-
-          priority.appendChild(newCardPriority);
-
-          newCardPriority.addEventListener("keydown", (e) => {
-            if (e.code === "Enter") {
-              element.changePriority(newCardPriority.value);
-              populateContent(project).initializeProjectDisplay();
-            }
-          });
-        });
 
         cardHeading.appendChild(title);
-
-        // buttons.appendChild(cardEdit);
-        buttons.appendChild(cardDelete);
 
         cardHeading.appendChild(buttons);
         cardHeading.appendChild(date);
@@ -217,19 +165,6 @@ function populateDOM() {
         const cardDesc = document.createElement("div");
         cardDesc.classList.add("card-desc");
         cardDesc.textContent = element.getCard().description;
-        cardDesc.addEventListener("dblclick", () => {
-          const newCardDesc = document.createElement("textarea");
-          newCardDesc.classList.add("card-edit");
-
-          cardDesc.appendChild(newCardDesc);
-
-          newCardDesc.addEventListener("keydown", (e) => {
-            if (e.code === "Enter") {
-              element.changeDescription(newCardDesc.value);
-              populateContent(project).initializeProjectDisplay();
-            }
-          });
-        });
 
         const checklist = document.createElement("div");
         checklist.classList.add("checklist");
@@ -266,6 +201,80 @@ function populateDOM() {
         card.appendChild(cardContent);
 
         cards.appendChild(card);
+
+        if (appendTo == main) {
+          const cardDelete = document.createElement("div");
+          cardDelete.classList.add("card-delete");
+          cardDelete.addEventListener("click", () => {
+            project.cardArr.splice([index], 1);
+            projectsFn.updateStorage();
+            populateContent(project).initializeProjectDisplay();
+          });
+
+          title.addEventListener("dblclick", () => {
+            const newCardTitle = document.createElement("input");
+            newCardTitle.classList.add("card-edit");
+            newCardTitle.value = element.getCard().title;
+
+            title.appendChild(newCardTitle);
+
+            newCardTitle.addEventListener("keydown", (e) => {
+              if (e.code === "Enter") {
+                element.changeTitle(newCardTitle.value);
+                populateContent(project).initializeProjectDisplay();
+              }
+            });
+          });
+
+          date.addEventListener("dblclick", () => {
+            const newCardDate = document.createElement("input");
+            newCardDate.type = "date";
+            newCardDate.classList.add("card-edit");
+            // newCardDate.value = format(element.getCard().date, 'yyyy-MM-dd')
+
+            date.appendChild(newCardDate);
+
+            newCardDate.addEventListener("keydown", (e) => {
+              if (e.code === "Enter") {
+                element.changeDate(newCardDate.value);
+                populateContent(project).initializeProjectDisplay();
+              }
+            });
+          });
+
+          priority.addEventListener("dblclick", () => {
+            const newCardPriority = document.createElement("input");
+            newCardPriority.type = "tel";
+            newCardPriority.classList.add("card-edit");
+            newCardPriority.min = 1;
+            newCardPriority.max = 3;
+
+            priority.appendChild(newCardPriority);
+
+            newCardPriority.addEventListener("keydown", (e) => {
+              if (e.code === "Enter") {
+                element.changePriority(newCardPriority.value);
+                populateContent(project).initializeProjectDisplay();
+              }
+            });
+          });
+
+          cardDesc.addEventListener("dblclick", () => {
+            const newCardDesc = document.createElement("textarea");
+            newCardDesc.classList.add("card-edit");
+
+            cardDesc.appendChild(newCardDesc);
+
+            newCardDesc.addEventListener("keydown", (e) => {
+              if (e.code === "Enter") {
+                element.changeDescription(newCardDesc.value);
+                populateContent(project).initializeProjectDisplay();
+              }
+            });
+          });
+
+          buttons.appendChild(cardDelete);
+        }
       }
       appendTo.appendChild(cards);
     }
@@ -543,7 +552,7 @@ function populateDOM() {
 
     upcoming.addEventListener("click", () => {
       populateContent().initializeUpcomingDisplay();
-    })
+    });
 
     projectsList.addEventListener("click", () => {
       const list = document.querySelector(".project-list");
@@ -574,6 +583,7 @@ function populateDOM() {
       changeTitle.addEventListener("keydown", (e) => {
         if (e.code === "Enter") {
           currentProject.changeTitle(changeTitle.value);
+          projectsFn.updateStorage();
 
           populateProjectList(projectsFn.projectArr);
           populateContent(currentProject).initializeProjectDisplay();
@@ -582,13 +592,16 @@ function populateDOM() {
     }
 
     function deleteProject() {
-      const currentProjectIndex = projectsFn.projectArr.indexOf(currentProject);
-      console.log(currentProjectIndex);
+      const currentProjectIndex = projectsFn.projectArr.findIndex(
+        (project) => project.title === currentProject.title
+      );
+
       projectsFn.projectArr.splice(currentProjectIndex, 1);
+      projectsFn.updateStorage();
       populateProjectList(projectsFn.projectArr);
       if (projectsFn.projectArr.length > 0) {
         populateContent(
-          projectsFn.projectArr[currentProjectIndex]
+          projectsFn.projectArr[(currentProjectIndex == 0 ? currentProjectIndex : currentProjectIndex - 1)]
         ).initializeProjectDisplay();
       } else {
         //placeholder
