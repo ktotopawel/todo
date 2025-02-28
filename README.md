@@ -6,7 +6,7 @@ This is a project made as a part of theodinproject.com curriculum. It's a simple
 
 - Using localStorage to remember your input.
 - Upcoming view of this week and month.
-- Card and project editing.
+- Card and project editing. (for now only insid the project view)
 - Checklists to track smaller tasks.
 
 ## Demo
