@@ -88,7 +88,7 @@ function projects() {
         "3"
       );
       myProject2.addCard("And others", "2025-07-22", "", "2");
-      myProject2.addCard("lolek", "2025-03-23", "myDesc", "1");
+      myProject2.addCard("myCard", "2025-03-23", "myDesc", "1");
 
       updateStorage();
     } else {
